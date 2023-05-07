@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.servicioUsuario.persistence.repository.UsuarioRepository;
+import com.example.servicioUsuario.exceptions.ToDoExceptions;
 
 @Service
 public class UsuarioService {
@@ -41,8 +42,9 @@ public class UsuarioService {
 
 		Optional<Usuario> optional = this.usuarioRepository.findById(id);
 		if (optional.isEmpty()) {
-
-			System.out.println("Debemos tratar la exception");
+			
+			throw new ToDoExceptions("El usuario buscado, no existe!", HttpStatus.NOT_FOUND);
+			//System.out.println("Debemos tratar la exception");
 
 		}
 
@@ -62,8 +64,10 @@ public class UsuarioService {
 			usuarioRepository.save(usuarioActualiza);
 			return ResponseEntity.ok(usuarioActualiza);
 		} else {
-			System.out.println("no hay registro con ese numero(Tratar la exception!!)");
-			return ResponseEntity.notFound().build();
+			
+			//System.out.println("no hay registro con ese numero(Tratar la exception!!)");
+			//return ResponseEntity.notFound().build();
+			throw new ToDoExceptions("El usuario a actualizar, no existe!", HttpStatus.NOT_FOUND);
 
 		}
 
@@ -74,7 +78,8 @@ public class UsuarioService {
 		Optional<Usuario> optional=this.usuarioRepository.findById(id);
 		
 		if(optional.isEmpty()) {
-			System.out.println("Tratar exception");
+			throw new ToDoExceptions("El usuario a eliminar, no existe!", HttpStatus.NOT_FOUND);
+			//System.out.println("Tratar exception");
 		}
 		this.usuarioRepository.deleteById(id);
 		

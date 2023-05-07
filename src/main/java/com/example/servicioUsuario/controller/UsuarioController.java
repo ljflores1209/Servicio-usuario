@@ -3,6 +3,7 @@ package com.example.servicioUsuario.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,8 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@RequestMapping(value = "/usuarios", method = RequestMethod.GET)
+	@RequestMapping(value = "/obtener_usuarios", method = RequestMethod.GET)
+	//@GetMapping("/usuarios")
 	public List<Usuario> obtenerUsuarios() {
 		
 
@@ -46,8 +48,8 @@ public class UsuarioController {
 		return this.usuarioService.crearUsuario(usuario);
 	}
 	
-	@PutMapping
-	public ResponseEntity<Usuario> Usuario(@RequestBody Usuario usuario){
+	@PutMapping("/editar_usuario")
+	public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario){
 		
 		this.usuarioService.actualizarUsuario(usuario);
 		
@@ -55,7 +57,13 @@ public class UsuarioController {
 	}
 
 	
-	
+	@DeleteMapping("/eliminar_usuario/{id}")
+	public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Long id  ){
+		
+		this.usuarioService.eliminaUsuario(id);
+		
+		return ResponseEntity.noContent().build();
+	}
 	
 	
 	

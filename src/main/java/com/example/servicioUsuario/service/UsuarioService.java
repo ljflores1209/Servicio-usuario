@@ -68,5 +68,17 @@ public class UsuarioService {
 		}
 
 	}
+	
+	public void eliminaUsuario(Long id) {
+		
+		Optional<Usuario> optional=this.usuarioRepository.findById(id);
+		
+		if(optional.isEmpty()) {
+			System.out.println("Tratar exception");
+		}
+		this.usuarioRepository.deleteById(id);
+		
+		
+	}
 
 }

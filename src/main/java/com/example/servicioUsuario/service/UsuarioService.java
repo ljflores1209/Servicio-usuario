@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.servicioUsuario.persistence.repository.UsuarioRepository;
+import com.example.servicioUsuario.service.dto.UsuarioDto;
 import com.example.servicioUsuario.exceptions.ToDoExceptions;
+import com.example.servicioUsuario.mapper.UsuarioDtoToUsuario;
 
 @Service
 public class UsuarioService {
 
 	private final UsuarioRepository usuarioRepository;
+	private final UsuarioDtoToUsuario mapper;
 
-	public UsuarioService(UsuarioRepository usuarioRepository) {
+	public UsuarioService(UsuarioRepository usuarioRepository, UsuarioDtoToUsuario mapper) {
 
 		this.usuarioRepository = usuarioRepository;
+		this.mapper = mapper;
 	}
 
-	public Usuario crearUsuario(Usuario usuario) {
-
-		usuario.setNombre("Pepe");
-		usuario.setApellido("Ruíz");
-		usuario.setDocumento("43210");
-
+	public Usuario crearUsuario(UsuarioDto usuarioDto) {
+		Usuario usuario=this.mapper.map(usuarioDto);
 		return this.usuarioRepository.save(usuario);
 	}
 
@@ -42,9 +42,9 @@ public class UsuarioService {
 
 		Optional<Usuario> optional = this.usuarioRepository.findById(id);
 		if (optional.isEmpty()) {
-			
+
 			throw new ToDoExceptions("El usuario buscado, no existe!", HttpStatus.NOT_FOUND);
-			//System.out.println("Debemos tratar la exception");
+			// System.out.println("Debemos tratar la exception");
 
 		}
 
@@ -60,30 +60,29 @@ public class UsuarioService {
 			usuarioActualiza.setNombre(usuario.getNombre());
 			usuarioActualiza.setApellido(usuario.getApellido());
 			usuarioActualiza.setDocumento(usuario.getDocumento());
-			System.out.println("El usuario " + usuario.getNombre() +  " con numero: "+usuario.getId());
+			System.out.println("El usuario " + usuario.getNombre() + " con numero: " + usuario.getId());
 			usuarioRepository.save(usuarioActualiza);
 			return ResponseEntity.ok(usuarioActualiza);
 		} else {
-			
-			//System.out.println("no hay registro con ese numero(Tratar la exception!!)");
-			//return ResponseEntity.notFound().build();
+
+			// System.out.println("no hay registro con ese numero(Tratar la exception!!)");
+			// return ResponseEntity.notFound().build();
 			throw new ToDoExceptions("El usuario a actualizar, no existe!", HttpStatus.NOT_FOUND);
 
 		}
 
 	}
-	
+
 	public void eliminaUsuario(Long id) {
-		
-		Optional<Usuario> optional=this.usuarioRepository.findById(id);
-		
-		if(optional.isEmpty()) {
+
+		Optional<Usuario> optional = this.usuarioRepository.findById(id);
+
+		if (optional.isEmpty()) {
 			throw new ToDoExceptions("El usuario a eliminar, no existe!", HttpStatus.NOT_FOUND);
-			//System.out.println("Tratar exception");
+			// System.out.println("Tratar exception");
 		}
 		this.usuarioRepository.deleteById(id);
-		
-		
+
 	}
 
 }

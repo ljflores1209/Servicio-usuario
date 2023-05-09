@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.servicioUsuario.persistence.entity.Usuario;
 import com.example.servicioUsuario.service.UsuarioService;
+import com.example.servicioUsuario.service.dto.UsuarioDto;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -23,55 +24,38 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@RequestMapping(value = "/obtener_usuarios", method = RequestMethod.GET)
-	//@GetMapping("/usuarios")
+	// @GetMapping("/usuarios")
 	public List<Usuario> obtenerUsuarios() {
-		
 
-		
 		return this.usuarioService.usuarios();
 	}
-	
+
 	@GetMapping("/{id}")
 	public Usuario obtenerUsuario(@PathVariable("id") Long id) {
-		
-		
-		
+
 		return this.usuarioService.obtenerUsuario(id);
 	}
 
 	@PostMapping
-	public Usuario crearUsuario(@RequestBody Usuario usuario) {
+	public Usuario crearUsuario(@RequestBody UsuarioDto usuarioDto) {
 
-		
-		
-
-		return this.usuarioService.crearUsuario(usuario);
+		return this.usuarioService.crearUsuario(usuarioDto);
 	}
-	
+
 	@PutMapping("/editar_usuario")
-	public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario){
-		
+	public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario) {
+
 		this.usuarioService.actualizarUsuario(usuario);
-		
+
 		return ResponseEntity.ok(usuario);
 	}
 
-	
 	@DeleteMapping("/eliminar_usuario/{id}")
-	public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Long id  ){
-		
+	public ResponseEntity<Void> eliminarUsuario(@PathVariable("id") Long id) {
+
 		this.usuarioService.eliminaUsuario(id);
-		
+
 		return ResponseEntity.noContent().build();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

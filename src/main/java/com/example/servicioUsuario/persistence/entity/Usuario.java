@@ -1,16 +1,18 @@
 package com.example.servicioUsuario.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuario", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Usuario {
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "nombre")
 	private String nombre;
@@ -20,6 +22,28 @@ public class Usuario {
 	private String documento;
 	@Column(name = "fechaAlta")
 	private LocalDateTime fechaAlta;
+	@Column(name = "clave")
+	private String clave;
+	@Column(name = "rol")
+	private UsuarioRol rol;
+	@OneToMany(mappedBy="rol", cascade=CascadeType.ALL, orphanRemoval=true)
+	private Set<Usuario> roles=new HashSet<>();
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+
+	public UsuarioRol getRol() {
+		return rol;
+	}
+
+	public void setRol(UsuarioRol rol) {
+		this.rol = rol;
+	}
 
 	public LocalDateTime getFechaAlta() {
 		return fechaAlta;

@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class ServicioUsuarioApplication implements CommandLineRunner{
-	
-	private static Logger LOG =LoggerFactory.getLogger(ServicioUsuarioApplication.class);
+public class ServicioUsuarioApplication implements CommandLineRunner {
+
+	private static Logger LOG = LoggerFactory.getLogger(ServicioUsuarioApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServicioUsuarioApplication.class, args);
@@ -20,7 +20,9 @@ public class ServicioUsuarioApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		LOG.info("Llegamos");
-		
+
 	}
+
+
 
 }

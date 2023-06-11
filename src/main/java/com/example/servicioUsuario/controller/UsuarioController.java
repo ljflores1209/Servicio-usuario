@@ -3,6 +3,7 @@ package com.example.servicioUsuario.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.servicioUsuario.persistence.entity.Usuario;
 import com.example.servicioUsuario.service.UsuarioService;
+
 import com.example.servicioUsuario.service.dto.UsuarioDto;
+import com.example.servicioUsuario.service.dto.UsuarioRespuesta;
+import com.example.servicioUsuario.util.AppConstantes;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -25,9 +30,13 @@ public class UsuarioController {
 
 	@RequestMapping(value = "/obtener_usuarios", method = RequestMethod.GET)
 	// @GetMapping("/usuarios")
-	public List<Usuario> obtenerUsuarios() {
+	public UsuarioRespuesta obtenerUsuarios(
+			@RequestParam(value = "pageNo", defaultValue = AppConstantes.NUMERO_DE_PAGINA_POR_DEFECTO, required = false) int numeroDePagina,
+			@RequestParam(value = "pageSize", defaultValue = AppConstantes.MEDIDA_DE_PAGINA_POR_DEFECTO, required = false) int medidaDePagina,
+			@RequestParam(value = "sortBy", defaultValue = AppConstantes.ORDENAR_POR_DEFECTO, required = false) String ordenarPor,
+			@RequestParam(value = "sortDir", defaultValue = AppConstantes.ORDENAR_DIRECCION_POR_DEFECTO, required = false) String sortDir){
 
-		return this.usuarioService.usuarios();
+		return this.usuarioService.obtenerUsuarios(numeroDePagina,medidaDePagina,ordenarPor,sortDir );
 	}
 
 	@GetMapping("/{id}")
